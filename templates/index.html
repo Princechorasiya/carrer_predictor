@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Career Recommendation System</title>
+	</head>
+
+	<body>
+		<h1>Career Recommendation System</h1>
+		<form action="/predict" method="POST">
+			<label for="stream">Stream:</label>
+			<select name="Stream" id="stream">
+				<option value="Science">Science</option>
+				<option value="Commerce">Commerce</option>
+				<option value="Arts">Arts</option></select
+			><br /><br />
+
+			<label for="interest1">Interest 1:</label>
+			<select name="Interest1" id="interest1">
+				<option value="Engineering">Engineering</option>
+				<option value="Medical">Medical</option>
+				<option value="Political Science">Political Science</option>
+				<option value="History">History</option>
+				<option value="Law">Law</option></select
+			><br /><br />
+
+			<label for="interest2">Interest 2:</label>
+			<select name="Interest2" id="interest2">
+				<option value="Engineering">Engineering</option>
+				<option value="Medical">Medical</option>
+				<option value="Political Science">Political Science</option>
+				<option value="History">History</option>
+				<option value="Law">Law</option></select
+			><br /><br />
+
+			<button type="submit">Predict Career</button>
+		</form>
+
+		<h2>Prediction Results:</h2>
+		<pre id="result"></pre>
+
+		<script>
+			document
+				.querySelector("form")
+				.addEventListener("submit", function (event) {
+					event.preventDefault();
+
+					const formData = new FormData(this);
+					const data = {};
+					formData.forEach((value, key) => {
+						data[key] = value;
+					});
+
+					fetch("/predict", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded",
+						},
+						body: new URLSearchParams(data),
+					})
+						.then((response) => response.json())
+						.then((result) => {
+							document.getElementById("result").textContent = JSON.stringify(
+								result,
+								null,
+								2
+							);
+						})
+						.catch((error) => {
+							console.error("Error:", error);
+						});
+				});
+		</script>
+	</body>
+</html>
